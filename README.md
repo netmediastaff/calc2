@@ -24,3 +24,13 @@ The service should use the data from the 3rd party API (https://data.cityofnewyo
 If you happen to have any questions, please send an email to konstantin.pasko@holidu.com
 
 Good luck and happy coding!
+
+-------------------------------------------------------------------
+
+Thank you Holidu for the opportunity
+
+The end-point to test the application with is host:port/{x}/{y}/{radius}
+
+  - X is the value on the X axis of the cartesian center point
+  - Y is the value on the Y axis of the cartesian center point
+  - A search radius in meters
