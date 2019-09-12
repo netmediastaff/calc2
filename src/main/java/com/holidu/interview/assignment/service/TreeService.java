@@ -7,8 +7,12 @@ package com.holidu.interview.assignment.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.holidu.interview.assignment.model.Tree;
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Service;
@@ -29,8 +33,7 @@ public class TreeService {
         try {
             //Read JSON file
             ObjectMapper om = new ObjectMapper();
-            FileReader reader = new FileReader(getClass().getClassLoader().getResource("nwxe-4ae8.json").getFile());//("nwxe-4ae8.json")) {
-            Tree[] trees = om.readValue(reader, Tree[].class);
+            Tree[] trees = om.readValue(getTreeData(), Tree[].class);
 
             for (Tree tree : trees) {
                 if (tree.getX_sp() >= x && tree.getX_sp() <= a && tree.getY_sp() >= y && tree.getY_sp() <= b) {
@@ -46,5 +49,27 @@ public class TreeService {
             System.out.println("Exception : " + e.getMessage());
         }
         return treesWithinRadius;
+    }
+
+    private static String getTreeData() {
+        StringBuilder treeData = new StringBuilder();
+        try {
+            String requestURl = "https://data.cityofnewyork.us/resource/nwxe-4ae8.json";
+            URL url = new URL(requestURl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setDoInput(true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+            String resp;
+            while ((resp = in.readLine()) != null) {
+                treeData.append(resp);
+            }
+            in.close();
+            connection.disconnect();
+        } catch (IOException e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+        return treeData.toString();
     }
 }
