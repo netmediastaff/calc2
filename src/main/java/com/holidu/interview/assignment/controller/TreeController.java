@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -31,7 +32,7 @@ public class TreeController {
 //    }
 
     @RequestMapping(value = "calculus", method = RequestMethod.GET)
-    public Response doCalculation(@PathVariable("query") String expression) throws UnsupportedEncodingException {
+    public Response doCalculation(@RequestParam("query") String expression) throws UnsupportedEncodingException {
         String decodedExpression = new String(Base64.getDecoder().decode(expression.getBytes()), "UTF-8");
         System.out.println(decodedExpression);
         return Evaluator.evaluate(decodedExpression);
